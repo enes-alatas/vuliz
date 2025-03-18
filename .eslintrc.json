@@ -1,0 +1,14 @@
+{
+  "extends": "./node_modules/gts/",
+  "overrides": [
+    {
+      "files": ["webpack.config.js"],
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "n/no-unpublished-require": "off"
+      }
+    }
+  ]
+}
