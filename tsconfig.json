@@ -1,11 +1,16 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "build"
+    "baseUrl": ".",
+    "target": "es6",
+    "module": "es6",
+    "lib": ["dom", "es6", "es2020"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "outDir": "build",
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
-  ]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules"]
 }
