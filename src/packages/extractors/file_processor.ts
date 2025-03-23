@@ -25,20 +25,6 @@ export abstract class AbstractFileProcessor implements FileProcessor {
   }
 
   /**
-   * Parses raw data from file content
-   * @param fileContent The content of the file
-   * @returns Promise resolving to parsed raw data
-   */
-  protected abstract parseRawData(fileContent: string): Promise<unknown>;
-
-  /**
-   * Parses package entries from raw data
-   * @param rawData The parsed raw data
-   * @returns Promise resolving to an array of packages
-   */
-  protected abstract parseEntries(rawData: unknown): Promise<Package[]>;
-
-  /**
    * Reads the content of a file
    * @param file The file to read
    * @returns Promise resolving to the file content
@@ -61,4 +47,18 @@ export abstract class AbstractFileProcessor implements FileProcessor {
       reader.readAsText(file);
     });
   }
+
+  /**
+   * Parses raw data from file content
+   * @param fileContent The content of the file
+   * @returns Promise resolving to parsed raw data
+   */
+  protected abstract parseRawData(fileContent: string): Promise<unknown>;
+
+  /**
+   * Parses package entries from raw data
+   * @param rawData The parsed raw data
+   * @returns Promise resolving to an array of packages
+   */
+  protected abstract parseEntries(rawData: unknown): Promise<Package[]>;
 }
