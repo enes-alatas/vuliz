@@ -68,7 +68,6 @@ Django = {version = ">=4.0.0"}
 "django-filter" = "22.1"
 psycopg2 = {version = ">=2.7,<3", extras = ["binary"]}
 "package-with-extras[security,ui]" = "~=1.5.0"
-git-package = {git = "https://github.com/user/repo.git", ref = "master"}
 
 [dev-packages]
 mypy = {version = "*"}
@@ -89,6 +88,24 @@ coverage = {version = ">=6.0.0"}
         {name: 'coverage', version: '6.0.0'},
         {name: 'flake8', version: LATEST_VERSION},
       ]),
+    );
+  });
+
+  it('should set version to LATEST_VERSION when version can not be resolved', async () => {
+    const pipfileContent = `
+[packages]
+git-package = {git = "https://github.com/user/repo.git", ref = "master"}
+    `;
+
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation();
+    const packages = await processPipfile(pipfileContent);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Error parsing package entry for git-package: Error: Unexpected version format in Pipfile',
+    );
+    expect(packages.length).toBeGreaterThanOrEqual(1);
+    expect(packages).toEqual(
+      expect.arrayContaining([{name: 'git-package', version: LATEST_VERSION}]),
     );
   });
 
