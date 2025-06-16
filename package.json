@@ -31,11 +31,11 @@
   },
   "homepage": "https://github.com/enes-alatas/vuliz#readme",
   "devDependencies": {
-    "@types/jest": "^29.5.14",
+    "@types/jest": "^30.0.0",
     "buffer": "^6.0.3",
     "gts": "^6.0.2",
     "http-server": "^14.1.1",
-    "jest": "^29.7.0",
+    "jest": "^30.0.0",
     "path-browserify": "^1.0.1",
     "stream-browserify": "^3.0.0",
     "ts-jest": "^29.3.4",
