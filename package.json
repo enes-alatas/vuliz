@@ -38,7 +38,7 @@
     "jest": "^30.0.2",
     "path-browserify": "^1.0.1",
     "stream-browserify": "^3.0.0",
-    "ts-jest": "^29.3.4",
+    "ts-jest": "^29.4.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "util": "^0.12.5",
