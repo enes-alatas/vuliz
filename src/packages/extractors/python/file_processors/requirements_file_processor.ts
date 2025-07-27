@@ -1,5 +1,5 @@
 import {AbstractFileProcessor} from '../../file_processor';
-import {LATEST_VERSION, Package} from '../../../types';
+import {LATEST_VERSION, Package, PackageType} from '../../../types';
 
 /**
  * Processes Python requirements.txt package files
@@ -65,6 +65,7 @@ export class RequirementsFileProcessor extends AbstractFileProcessor {
     return {
       name: RequirementsFileProcessor.cleanPackageName(match[1]),
       version: RequirementsFileProcessor.cleanVersion(match[2] || ''),
+      type: PackageType.PYPI,
     };
   }
 

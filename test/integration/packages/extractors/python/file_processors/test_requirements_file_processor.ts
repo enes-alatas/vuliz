@@ -1,5 +1,5 @@
 import {RequirementsFileProcessor} from 'src/packages/extractors/python/file_processors/requirements_file_processor';
-import {LATEST_VERSION} from 'src/packages/types';
+import {PackageType, LATEST_VERSION} from 'src/packages/types';
 
 // Mock the AbstractFileProcessor to avoid file system dependencies
 jest.mock('src/packages/extractors/file_processor', () => {
@@ -56,11 +56,11 @@ black==22.3.0
     expect(packages).toHaveLength(5);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'flask', version: '2.0.0'},
-        {name: 'requests', version: '2.27.0'},
-        {name: 'django', version: LATEST_VERSION},
-        {name: 'pytest', version: '7.0.0'},
-        {name: 'black', version: '22.3.0'},
+        {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.27.0', type: PackageType.PYPI},
+        {name: 'django', version: LATEST_VERSION, type: PackageType.PYPI},
+        {name: 'pytest', version: '7.0.0', type: PackageType.PYPI},
+        {name: 'black', version: '22.3.0', type: PackageType.PYPI},
       ]),
     );
   });
@@ -76,8 +76,8 @@ requests[security,socks]>=2.25.0
     expect(packages).toHaveLength(2);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'django', version: '3.2.1'},
-        {name: 'requests', version: '2.25.0'},
+        {name: 'django', version: '3.2.1', type: PackageType.PYPI},
+        {name: 'requests', version: '2.25.0', type: PackageType.PYPI},
       ]),
     );
   });
@@ -98,13 +98,13 @@ black==22.3.0
     expect(packages).toHaveLength(7);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'flask', version: '2.0.0'},
-        {name: 'requests', version: '2.27.0'},
-        {name: 'numpy', version: '1.20.0'},
-        {name: 'pandas', version: '1.4.0'},
-        {name: 'pytest', version: '7.0.0'},
-        {name: 'pyyaml', version: '6.0'},
-        {name: 'black', version: '22.3.0'},
+        {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.27.0', type: PackageType.PYPI},
+        {name: 'numpy', version: '1.20.0', type: PackageType.PYPI},
+        {name: 'pandas', version: '1.4.0', type: PackageType.PYPI},
+        {name: 'pytest', version: '7.0.0', type: PackageType.PYPI},
+        {name: 'pyyaml', version: '6.0', type: PackageType.PYPI},
+        {name: 'black', version: '22.3.0', type: PackageType.PYPI},
       ]),
     );
   });
@@ -121,9 +121,13 @@ importlib-metadata; python_version < '3.8'
     expect(packages).toHaveLength(3);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'django', version: '3.2'},
-        {name: 'requests', version: '2.27.0'},
-        {name: 'importlib-metadata', version: LATEST_VERSION},
+        {name: 'django', version: '3.2', type: PackageType.PYPI},
+        {name: 'requests', version: '2.27.0', type: PackageType.PYPI},
+        {
+          name: 'importlib-metadata',
+          version: LATEST_VERSION,
+          type: PackageType.PYPI,
+        },
       ]),
     );
   });
@@ -142,9 +146,9 @@ django
     expect(packages).toHaveLength(3);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'flask', version: '2.0.0'},
-        {name: 'requests', version: '2.27.0'},
-        {name: 'django', version: LATEST_VERSION},
+        {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.27.0', type: PackageType.PYPI},
+        {name: 'django', version: LATEST_VERSION, type: PackageType.PYPI},
       ]),
     );
   });
@@ -160,9 +164,9 @@ numpy==1.21.0rc1
 
     expect(packages).toHaveLength(3);
     expect(packages).toEqual([
-      {name: 'flask', version: '2.0.0'},
-      {name: 'django', version: '3.2.1'},
-      {name: 'numpy', version: '1.21.0rc1'},
+      {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+      {name: 'django', version: '3.2.1', type: PackageType.PYPI},
+      {name: 'numpy', version: '1.21.0rc1', type: PackageType.PYPI},
     ]);
   });
 
@@ -210,9 +214,13 @@ requests>=2.27.0
     expect(packages).toHaveLength(3);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'flask', version: '2.0.0'},
-        {name: 'requests', version: '2.27.0'},
-        {name: 'invalid-entry-without-version-spec', version: LATEST_VERSION},
+        {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.27.0', type: PackageType.PYPI},
+        {
+          name: 'invalid-entry-without-version-spec',
+          version: LATEST_VERSION,
+          type: PackageType.PYPI,
+        },
       ]),
     );
   });
@@ -223,6 +231,7 @@ requests>=2.27.0
       {
         name: 'flask',
         version: '2.0.0',
+        type: PackageType.PYPI,
       },
     );
 
@@ -231,6 +240,7 @@ requests>=2.27.0
     ).toEqual({
       name: 'requests',
       version: '2.27.0',
+      type: PackageType.PYPI,
     });
 
     expect(
@@ -238,11 +248,13 @@ requests>=2.27.0
     ).toEqual({
       name: 'django',
       version: '3.2.1',
+      type: PackageType.PYPI,
     });
 
     expect(RequirementsFileProcessor.parsePackageEntry('numpy')).toEqual({
       name: 'numpy',
       version: LATEST_VERSION,
+      type: PackageType.PYPI,
     });
   });
 });

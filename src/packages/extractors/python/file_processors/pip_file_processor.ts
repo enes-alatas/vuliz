@@ -1,7 +1,7 @@
 import {JsonMap} from '@iarna/toml';
 import {parseToml} from 'src/utils/file_parsers';
 import {AbstractFileProcessor} from '../../file_processor';
-import {Package, LATEST_VERSION} from '../../../types';
+import {Package, LATEST_VERSION, PackageType} from '../../../types';
 
 /**
  * Processes Python Pipfiles
@@ -41,10 +41,10 @@ export class PipFileProcessor extends AbstractFileProcessor {
     const name = PipFileProcessor.cleanPackageName(rawName);
     try {
       const version = this.extractVersion(rawVersion);
-      return {name, version};
+      return {name, version, type: PackageType.PYPI};
     } catch (error) {
       console.error(`Error parsing package entry for ${rawName}: ${error}`);
-      return {name, version: LATEST_VERSION};
+      return {name, version: LATEST_VERSION, type: PackageType.PYPI};
     }
   }
 

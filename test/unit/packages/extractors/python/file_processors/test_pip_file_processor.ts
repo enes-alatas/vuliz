@@ -1,4 +1,5 @@
 import {PipFileProcessor} from 'src/packages/extractors/python/file_processors/pip_file_processor';
+import {PackageType} from 'src/packages/types';
 import {parseToml} from 'src/utils/file_parsers';
 import {JsonMap} from '@iarna/toml';
 
@@ -60,10 +61,10 @@ describe('PipFileProcessor', () => {
 
       const result = await parseEntries(mockData);
       expect(result).toEqual([
-        {name: 'flask', version: '2.0.0'},
-        {name: 'django', version: '3.2.1'},
-        {name: 'pytest', version: '*'},
-        {name: 'mypy', version: '0.991'},
+        {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+        {name: 'django', version: '3.2.1', type: PackageType.PYPI},
+        {name: 'pytest', version: '*', type: PackageType.PYPI},
+        {name: 'mypy', version: '0.991', type: PackageType.PYPI},
       ]);
     });
 
@@ -85,6 +86,7 @@ describe('PipFileProcessor', () => {
       expect(parsePackageEntry('flask', '==2.0.0')).toEqual({
         name: 'flask',
         version: '2.0.0',
+        type: PackageType.PYPI,
       });
     });
 
@@ -92,6 +94,7 @@ describe('PipFileProcessor', () => {
       expect(parsePackageEntry('django[security]', '3.2.1')).toEqual({
         name: 'django',
         version: '3.2.1',
+        type: PackageType.PYPI,
       });
     });
 
@@ -101,6 +104,7 @@ describe('PipFileProcessor', () => {
       ).toEqual({
         name: 'mypy',
         version: '0.991',
+        type: PackageType.PYPI,
       });
     });
 
@@ -108,6 +112,7 @@ describe('PipFileProcessor', () => {
       expect(parsePackageEntry('PyYAML', '6.0')).toEqual({
         name: 'pyyaml',
         version: '6.0',
+        type: PackageType.PYPI,
       });
     });
 
@@ -115,6 +120,7 @@ describe('PipFileProcessor', () => {
       expect(parsePackageEntry('package', '~=1.2.3')).toEqual({
         name: 'package',
         version: '1.2.3',
+        type: PackageType.PYPI,
       });
     });
 
@@ -122,6 +128,7 @@ describe('PipFileProcessor', () => {
       expect(parsePackageEntry('pandas', '')).toEqual({
         name: 'pandas',
         version: '*',
+        type: PackageType.PYPI,
       });
     });
   });

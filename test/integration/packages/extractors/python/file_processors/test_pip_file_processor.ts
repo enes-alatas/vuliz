@@ -1,5 +1,5 @@
 import {PipFileProcessor} from 'src/packages/extractors/python/file_processors/pip_file_processor';
-import {LATEST_VERSION} from 'src/packages/types';
+import {PackageType, LATEST_VERSION} from 'src/packages/types';
 
 // Mock the AbstractFileProcessor to avoid file system dependencies
 jest.mock('src/packages/extractors/file_processor', () => {
@@ -52,11 +52,11 @@ black = "22.3.0"
     expect(packages).toHaveLength(5);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'flask', version: '2.0.0'},
-        {name: 'requests', version: '2.27.0'},
-        {name: 'django', version: LATEST_VERSION},
-        {name: 'pytest', version: '7.0.0'},
-        {name: 'black', version: '22.3.0'},
+        {name: 'flask', version: '2.0.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.27.0', type: PackageType.PYPI},
+        {name: 'django', version: LATEST_VERSION, type: PackageType.PYPI},
+        {name: 'pytest', version: '7.0.0', type: PackageType.PYPI},
+        {name: 'black', version: '22.3.0', type: PackageType.PYPI},
       ]),
     );
   });
@@ -80,13 +80,13 @@ coverage = {version = ">=6.0.0"}
     expect(packages.length).toBeGreaterThanOrEqual(7);
     expect(packages).toEqual(
       expect.arrayContaining([
-        {name: 'django', version: '4.0.0'},
-        {name: 'django-filter', version: '22.1'},
-        {name: 'psycopg2', version: '2.7'},
-        {name: 'package-with-extras', version: '1.5.0'},
-        {name: 'mypy', version: LATEST_VERSION},
-        {name: 'coverage', version: '6.0.0'},
-        {name: 'flake8', version: LATEST_VERSION},
+        {name: 'django', version: '4.0.0', type: PackageType.PYPI},
+        {name: 'django-filter', version: '22.1', type: PackageType.PYPI},
+        {name: 'psycopg2', version: '2.7', type: PackageType.PYPI},
+        {name: 'package-with-extras', version: '1.5.0', type: PackageType.PYPI},
+        {name: 'mypy', version: LATEST_VERSION, type: PackageType.PYPI},
+        {name: 'coverage', version: '6.0.0', type: PackageType.PYPI},
+        {name: 'flake8', version: LATEST_VERSION, type: PackageType.PYPI},
       ]),
     );
   });
@@ -105,7 +105,9 @@ git-package = {git = "https://github.com/user/repo.git", ref = "master"}
     );
     expect(packages.length).toBeGreaterThanOrEqual(1);
     expect(packages).toEqual(
-      expect.arrayContaining([{name: 'git-package', version: LATEST_VERSION}]),
+      expect.arrayContaining([
+        {name: 'git-package', version: LATEST_VERSION, type: PackageType.PYPI},
+      ]),
     );
   });
 

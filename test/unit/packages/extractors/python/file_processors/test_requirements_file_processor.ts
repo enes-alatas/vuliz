@@ -1,5 +1,5 @@
 import {RequirementsFileProcessor} from 'src/packages/extractors/python/file_processors/requirements_file_processor';
-
+import {PackageType} from 'src/packages/types';
 describe('RequirementsFileProcessor', () => {
   let processor: RequirementsFileProcessor;
 
@@ -49,10 +49,10 @@ describe('RequirementsFileProcessor', () => {
       ];
       const result = await parseEntries(rawData);
       expect(result).toEqual([
-        {name: 'flask', version: '*'},
-        {name: 'django', version: '3.2'},
-        {name: 'numpy', version: '1.19.0'},
-        {name: 'requests', version: '2.25.1'},
+        {name: 'flask', version: '*', type: PackageType.PYPI},
+        {name: 'django', version: '3.2', type: PackageType.PYPI},
+        {name: 'numpy', version: '1.19.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.25.1', type: PackageType.PYPI},
       ]);
     });
 
@@ -65,10 +65,10 @@ describe('RequirementsFileProcessor', () => {
       ];
       const result = await parseEntries(rawData);
       expect(result).toEqual([
-        {name: 'flask', version: '*'},
-        {name: 'django', version: '3.2'},
-        {name: 'numpy', version: '1.19.0'},
-        {name: 'requests', version: '2.25.1'},
+        {name: 'flask', version: '*', type: PackageType.PYPI},
+        {name: 'django', version: '3.2', type: PackageType.PYPI},
+        {name: 'numpy', version: '1.19.0', type: PackageType.PYPI},
+        {name: 'requests', version: '2.25.1', type: PackageType.PYPI},
       ]);
     });
 
@@ -84,11 +84,13 @@ describe('RequirementsFileProcessor', () => {
       expect(parsePackageEntry('flask')).toEqual({
         name: 'flask',
         version: '*',
+        type: PackageType.PYPI,
       });
 
       expect(parsePackageEntry('Django==3.2')).toEqual({
         name: 'django',
         version: '3.2',
+        type: PackageType.PYPI,
       });
     });
 
@@ -96,16 +98,19 @@ describe('RequirementsFileProcessor', () => {
       expect(parsePackageEntry('numpy>=1.19.0')).toEqual({
         name: 'numpy',
         version: '1.19.0',
+        type: PackageType.PYPI,
       });
 
       expect(parsePackageEntry('requests~=2.25.0')).toEqual({
         name: 'requests',
         version: '2.25.0',
+        type: PackageType.PYPI,
       });
 
       expect(parsePackageEntry('package!=1.0.0')).toEqual({
         name: 'package',
         version: '1.0.0',
+        type: PackageType.PYPI,
       });
     });
 
@@ -115,6 +120,7 @@ describe('RequirementsFileProcessor', () => {
       expect(parsePackageEntry('requests[security]==2.25.1')).toEqual({
         name: 'requests',
         version: '2.25.1',
+        type: PackageType.PYPI,
       });
     });
 
@@ -122,6 +128,7 @@ describe('RequirementsFileProcessor', () => {
       expect(parsePackageEntry('PyYAML==5.4.1')).toEqual({
         name: 'pyyaml',
         version: '5.4.1',
+        type: PackageType.PYPI,
       });
     });
 
@@ -129,6 +136,7 @@ describe('RequirementsFileProcessor', () => {
       expect(parsePackageEntry('pandas')).toEqual({
         name: 'pandas',
         version: '*',
+        type: PackageType.PYPI,
       });
     });
 
@@ -137,6 +145,7 @@ describe('RequirementsFileProcessor', () => {
       expect(parsePackageEntry('package==')).toEqual({
         name: 'package',
         version: '*',
+        type: PackageType.PYPI,
       });
     });
   });
