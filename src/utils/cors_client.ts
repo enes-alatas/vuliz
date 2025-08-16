@@ -59,7 +59,17 @@ export async function corsFetch(
     const {url, options} = normalizeFetchInput(input, init);
     const proxyUrl = constructProxyUrl(url);
 
-    return await fetchWithTimeout(proxyUrl, options);
+    // Always add the X-Requested-With header just in case
+    const mergedHeaders = {
+      ...(options.headers || {}),
+      'X-Requested-With': 'XMLHttpRequest',
+    };
+    const mergedOptions = {
+      ...options,
+      headers: mergedHeaders,
+    };
+
+    return await fetchWithTimeout(proxyUrl, mergedOptions);
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error occurred';
@@ -96,11 +106,8 @@ function normalizeFetchInput(
 function constructProxyUrl(targetUrl: string): string {
   // Validate the target URL using Node's URL constructor
   try {
-    // Validate the target URL
-    new URL(targetUrl);
-
     // Construct the proxy URL
-    const proxyUrl = new URL(targetUrl, CORS_CONFIG.PROXY_BASE_URL);
+    const proxyUrl = new URL(`${CORS_CONFIG.PROXY_BASE_URL}${targetUrl}`);
     return proxyUrl.toString();
   } catch (error) {
     throw new CorsProxyError(`Invalid URL provided: ${targetUrl}`);
@@ -115,7 +122,6 @@ async function fetchWithTimeout(
   options: CorsFetchOptions,
 ): Promise<Response> {
   const timeout = options.timeout ?? CORS_CONFIG.TIMEOUT_MS;
-
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
