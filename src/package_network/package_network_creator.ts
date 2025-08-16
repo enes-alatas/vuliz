@@ -37,7 +37,7 @@ export class PackageNetworkCreator {
    * Creates a package network from the provided package file.
    *
    * @returns A promise that resolves to a PackageNetwork containing levels of packages and dependencies
-   * @throws {Error} If package extraction fails or vulnerability data cannot be retrieved
+   * @throws {PackageNetworkCreationError} If package extraction fails or vulnerability data cannot be retrieved
    */
   async create(): Promise<PackageNetwork> {
     const levels: PackageNetworkLevel[] = [];
