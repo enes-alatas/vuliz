@@ -1,59 +1,59 @@
 /**
- * Configuration for CORS proxy settings
+ * Configuration for proxy client settings
  */
-const CORS_CONFIG = {
-  /** Base URL for the CORS proxy service */
+const PROXY_CONFIG = {
+  /** Base URL for the proxy service */
   PROXY_BASE_URL:
-    process.env.CORS_PROXY_URL || 'https://cors-anywhere.herokuapp.com/',
+    process.env.PROXY_URL || 'https://cors-anywhere.herokuapp.com/',
   /** Timeout for requests in milliseconds */
   TIMEOUT_MS: 10000,
 } as const;
 
 /**
- * Custom error for CORS-related issues
+ * Custom error for proxy client issues
  */
-export class CorsProxyError extends Error {
+export class ProxyClientError extends Error {
   constructor(
     message: string,
     public readonly originalError?: Error,
   ) {
     super(message);
-    this.name = 'CorsProxyError';
+    this.name = 'ProxyClientError';
   }
 }
 
 /**
- * Options for the CORS fetch function
+ * Options for the ProxyClient fetch function
  */
-export interface CorsFetchOptions extends RequestInit {
+export interface ProxyClientFetchOptions extends RequestInit {
   /** Custom timeout in milliseconds */
   timeout?: number;
 }
 
 /**
- * A drop-in replacement for `fetch()` to send requests over a CORS proxy.
+ * A drop-in replacement for `fetch()` to send requests over a proxy.
  *
  * @param input - The URL string or Request object to fetch
  * @param init - Optional request configuration
  * @returns Promise that resolves to a Response object
- * @throws {CorsProxyError} When the request fails or times out
+ * @throws {ProxyClientError} When the request fails or times out
  *
  * @example
  * ```typescript
  * // Basic usage
- * const response = await corsFetch('https://api.example.com/data');
+ * const response = await proxyClientFetch('https://api.example.com/data');
  *
  * // With options
- * const response = await corsFetch('https://api.example.com/data', {
+ * const response = await proxyClientFetch('https://api.example.com/data', {
  *   method: 'POST',
  *   headers: { 'Content-Type': 'application/json' },
  *   body: JSON.stringify({ key: 'value' })
  * });
  * ```
  */
-export async function corsFetch(
+export async function proxyClientFetch(
   input: string | Request,
-  init?: CorsFetchOptions,
+  init?: ProxyClientFetchOptions,
 ): Promise<Response> {
   try {
     const {url, options} = normalizeFetchInput(input, init);
@@ -73,8 +73,8 @@ export async function corsFetch(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error occurred';
-    throw new CorsProxyError(
-      `CORS proxy request failed: ${errorMessage}`,
+    throw new ProxyClientError(
+      `Proxy request failed: ${errorMessage}`,
       error as Error,
     );
   }
@@ -85,8 +85,8 @@ export async function corsFetch(
  */
 function normalizeFetchInput(
   input: string | Request,
-  init?: CorsFetchOptions,
-): {url: string; options: CorsFetchOptions} {
+  init?: ProxyClientFetchOptions,
+): {url: string; options: ProxyClientFetchOptions} {
   if (typeof input === 'string') {
     return {
       url: input,
@@ -107,10 +107,10 @@ function constructProxyUrl(targetUrl: string): string {
   // Validate the target URL using Node's URL constructor
   try {
     // Construct the proxy URL
-    const proxyUrl = new URL(`${CORS_CONFIG.PROXY_BASE_URL}${targetUrl}`);
+    const proxyUrl = new URL(`${PROXY_CONFIG.PROXY_BASE_URL}${targetUrl}`);
     return proxyUrl.toString();
   } catch (error) {
-    throw new CorsProxyError(`Invalid URL provided: ${targetUrl}`);
+    throw new ProxyClientError(`Invalid URL provided: ${targetUrl}`);
   }
 }
 
@@ -119,9 +119,9 @@ function constructProxyUrl(targetUrl: string): string {
  */
 async function fetchWithTimeout(
   url: string,
-  options: CorsFetchOptions,
+  options: ProxyClientFetchOptions,
 ): Promise<Response> {
-  const timeout = options.timeout ?? CORS_CONFIG.TIMEOUT_MS;
+  const timeout = options.timeout ?? PROXY_CONFIG.TIMEOUT_MS;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 

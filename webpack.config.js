@@ -27,6 +27,9 @@ module.exports = {
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
+    new webpack.DefinePlugin({
+      'process.env.PROXY_URL': JSON.stringify(process.env.PROXY_URL),
+    }),
   ],
   output: {
     filename: 'bundle.js',
