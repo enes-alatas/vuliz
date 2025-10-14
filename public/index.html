@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vuliz</title>
+    <!-- External Dependencies -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Application Styles -->
+    <link rel="stylesheet" href="styles/app.css">
+
+</head>
+<body>
+    <h1>vuliz</h1>
+    <div class="input-container" id="inputContainer">
+        <div class="file-input-wrapper">
+            <span class="upload-text" id="uploadText">Please select your package file</span>
+            <label for="fileInput" class="upload-icon">
+                <i class="fas fa-arrow-up"></i>
+            </label>
+            <input type="file" id="fileInput" accept="*">
+        </div>
+
+    </div>
+    <div id="network"></div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container">
+        <div id="notificationContent" class="notification-content"></div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="dist/bundle.js"></script>
+
+    <!-- Configuration -->
+    <script src="scripts/config.js"></script>
+
+    <!-- Main Application -->
+    <script src="scripts/app.js"></script>
+</body>
+</html>
