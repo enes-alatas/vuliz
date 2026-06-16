@@ -29,3 +29,12 @@ jobs:
 
       - name: Unit tests
         run: npm run test:unit
+
+      - name: Integration tests
+        run: npm run test:integration
+        env:
+          # Proxy base URL the app uses to reach the Sonatype OSS Index API.
+          # This value is already public (baked into the deployed client bundle).
+          # To keep it out of the repo, set a PROXY_URL repository secret and use
+          # ${{ secrets.PROXY_URL }} here instead.
+          PROXY_URL: https://4gbpfc2klb.execute-api.eu-west-1.amazonaws.com/prod
