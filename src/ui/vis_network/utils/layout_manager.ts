@@ -17,9 +17,8 @@ export class LayoutManager {
   /**
    * Create radial flower layout for the network around the center node
    * @param nodes - Vis.js nodes dataset
-   * @param edges - Vis.js edges dataset
    */
-  async createRadialLayout(nodes: any, edges: any): Promise<void> {
+  async createRadialLayout(nodes: any): Promise<void> {
     const centerId = NETWORK_LAYOUT.CENTER_NODE_ID;
     const centerNode = nodes.get(centerId);
 

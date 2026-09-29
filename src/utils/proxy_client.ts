@@ -109,7 +109,7 @@ function constructProxyUrl(targetUrl: string): string {
     // Construct the proxy URL
     const proxyUrl = new URL(`${PROXY_CONFIG.PROXY_BASE_URL}${targetUrl}`);
     return proxyUrl.toString();
-  } catch (error) {
+  } catch {
     throw new ProxyClientError(`Invalid URL provided: ${targetUrl}`);
   }
 }

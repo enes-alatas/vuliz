@@ -17,7 +17,7 @@ export abstract class AbstractFileProcessor implements FileProcessor {
       const fileContent = await this.readFile(packagesFile);
       const rawData = await this.parseRawData(fileContent);
       return await this.parseEntries(rawData);
-    } catch (error) {
+    } catch {
       throw new FileProcessingError(
         `Failed to process file ${packagesFile.name}`,
       );

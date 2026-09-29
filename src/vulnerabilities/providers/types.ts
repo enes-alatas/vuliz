@@ -1,5 +1,4 @@
 import {Package} from 'src/packages/types';
-import {PackageType} from 'src/packages/types';
 
 /**
  * Interface for vulnerability data providers
