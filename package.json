@@ -53,5 +53,8 @@
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5"
+  },
+  "overrides": {
+    "tmp": "^0.2.7"
   }
 }
