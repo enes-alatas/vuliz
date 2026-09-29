@@ -32,6 +32,9 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.PROXY_URL': JSON.stringify(process.env.PROXY_URL),
+      'process.env.VULNERABILITY_PROVIDER': JSON.stringify(
+        process.env.VULNERABILITY_PROVIDER,
+      ),
     }),
   ],
   output: {

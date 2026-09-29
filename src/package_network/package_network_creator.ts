@@ -1,7 +1,8 @@
 import {PackageNetwork, PackageNetworkLevel} from './types';
 import {extractPackages} from '../packages/package_extractor_factory';
 import {extractDependencies} from '../dependencies/dependency_provider_factory';
-import {SonaTypeVulnerabilityProvider} from '../vulnerabilities/providers/sonatype_vulnerability_provider';
+import {createVulnerabilityProvider} from '../vulnerabilities/providers/vulnerability_provider_factory';
+import {VulnerabilityProvider} from '../vulnerabilities/providers/types';
 import {LATEST_VERSION, Package} from '../packages/types';
 import {Dependency} from '../dependencies/types';
 import {PackageNetworkCreationError} from './errors';
@@ -23,14 +24,18 @@ export class PackageNetworkCreator {
   private readonly maxLevels: number;
   private readonly processedDependencies: Set<string>;
   private readonly processedPackages: Map<string, Package>;
-  private readonly vulnerabilityProvider: SonaTypeVulnerabilityProvider; // this is just for now, we can add more providers later and use a factory to create the provider
+  private readonly vulnerabilityProvider: VulnerabilityProvider;
 
-  constructor(packageFile: File, maxLevels = 3) {
+  constructor(
+    packageFile: File,
+    maxLevels = 3,
+    vulnerabilityProvider: VulnerabilityProvider = createVulnerabilityProvider(),
+  ) {
     this.packageFile = packageFile;
     this.maxLevels = maxLevels;
     this.processedDependencies = new Set<string>();
     this.processedPackages = new Map<string, Package>();
-    this.vulnerabilityProvider = new SonaTypeVulnerabilityProvider();
+    this.vulnerabilityProvider = vulnerabilityProvider;
   }
 
   /**
