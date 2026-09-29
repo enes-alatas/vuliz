@@ -23,7 +23,17 @@ See Vuliz in action at [https://vuliz.alatas.dev](https://vuliz.alatas.dev)
 
 ### Planned
 - **Gradle** - JVM languages (Java, Kotlin, Scala)
-- **Google OSV** (Open Source Vulnerabilities) database support
+
+## 🔍 Vulnerability Sources
+
+- **Sonatype OSS Index** (default)
+- **Google OSV** ([osv.dev](https://osv.dev)). It needs no authentication, so requests go straight from your browser without the proxy.
+
+Choose the source at build time with the `VULNERABILITY_PROVIDER` environment variable (`sonatype` or `osv`):
+
+```bash
+VULNERABILITY_PROVIDER=osv npm run build
+```
 
 ## 🏗️ Architecture
 
@@ -31,7 +41,7 @@ Vuliz was originally designed to run entirely in the browser for maximum privacy
 
 The authentication proxy is open source and available at: [https://github.com/enes-alatas/authru](https://github.com/enes-alatas/authru)
 
-This architecture ensures that your package files are still processed locally in your browser, while only the vulnerability checks are proxied through the authentication service.
+This architecture ensures that your package files are still processed locally in your browser, while only the vulnerability checks are proxied through the authentication service. With the OSV source, no proxy is involved.
 
 ## 🛠️ Getting Started
 
