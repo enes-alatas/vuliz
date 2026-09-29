@@ -48,7 +48,7 @@
     "typescript": "^6.0.3",
     "util": "^0.12.5",
     "webpack": "^5.111.1",
-    "webpack-cli": "^7.2.1",
+    "webpack-cli": "^7.2.3",
     "webpack-dev-server": "^6.0.0"
   },
   "dependencies": {
