@@ -184,10 +184,7 @@ export class VisNetworkEngine {
    */
   private async setLayout(): Promise<void> {
     this.setCenterNode(NETWORK_LAYOUT.CENTER_NODE_ID);
-    await this.layoutManager.createRadialLayout(
-      this.networkNodes!,
-      this.networkEdges!,
-    );
+    await this.layoutManager.createRadialLayout(this.networkNodes!);
   }
 
   /**
