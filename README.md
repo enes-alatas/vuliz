@@ -17,12 +17,12 @@ See Vuliz in action at [https://vuliz.alatas.dev](https://vuliz.alatas.dev)
 
 ### Currently Supported
 - **Python** (pip) - `requirements.txt` files
+- **Gradle** - JVM languages (Java, Kotlin, Scala) - `build.gradle`, `build.gradle.kts` and `gradle.lockfile` files
+
+  Transitive dependencies come from the [deps.dev](https://deps.dev) API. Build scripts are read without running Gradle, so dependencies from version catalogs (`libs.*`) and versions computed at build time are not picked up. A `gradle.lockfile` (enable [dependency locking](https://docs.gradle.org/current/userguide/dependency_locking.html), then run `./gradlew dependencies --write-locks`) gives the most accurate result, since it lists every resolved version.
 
 ### Under Development
 - **Node.js** (npm/yarn) - JavaScript/TypeScript packages 🚧
-
-### Planned
-- **Gradle** - JVM languages (Java, Kotlin, Scala)
 
 ## 🔍 Vulnerability Sources
 
