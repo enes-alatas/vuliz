@@ -1,5 +1,6 @@
 import {extractPackages} from 'src/packages/package_extractor_factory';
 import {PythonPackageExtractor} from 'src/packages/extractors/python/python_package_extractor';
+import {GradlePackageExtractor} from 'src/packages/extractors/gradle/gradle_package_extractor';
 import {PythonDependencyProvider} from 'src/dependencies/python_dependency_provider';
 import {Package} from 'src/packages/types';
 import {Dependency} from 'src/dependencies/types';
@@ -7,6 +8,7 @@ import {UnsupportedFileTypeError} from 'src/packages/errors';
 
 // Mock the extractors and dependency providers
 jest.mock('src/packages/extractors/python/python_package_extractor');
+jest.mock('src/packages/extractors/gradle/gradle_package_extractor');
 jest.mock('src/dependencies/python_dependency_provider');
 
 describe('PackageExtractorFactory', () => {
@@ -21,6 +23,10 @@ describe('PackageExtractorFactory', () => {
   ];
 
   const MockedPythonPackageExtractor = jest.mocked(PythonPackageExtractor);
+  const MockedGradlePackageExtractor = jest.mocked(GradlePackageExtractor);
+  const mockGradlePackages: Package[] = [
+    {name: 'com.google.guava:guava', version: '31.1-jre'},
+  ];
   const MockedPythonDependencyProvider = jest.mocked(PythonDependencyProvider);
 
   beforeEach(() => {
@@ -35,6 +41,14 @@ describe('PackageExtractorFactory', () => {
             pipfile: jest.fn(),
           },
           extractFromFile: jest.fn().mockResolvedValue(mockPackages),
+        }) as any,
+    );
+
+    MockedGradlePackageExtractor.mockImplementation(
+      () =>
+        ({
+          fileProcessorMap: {},
+          extractFromFile: jest.fn().mockResolvedValue(mockGradlePackages),
         }) as any,
     );
 
@@ -91,6 +105,17 @@ describe('PackageExtractorFactory', () => {
     });
 
     describe('error handling', () => {
+      it.each(['build.gradle', 'build.gradle.kts', 'gradle.lockfile'])(
+        'should extract packages from %s with the Gradle extractor',
+        async fileName => {
+          const result = await extractPackages({name: fileName} as File);
+
+          expect(GradlePackageExtractor).toHaveBeenCalled();
+          expect(PythonPackageExtractor).not.toHaveBeenCalled();
+          expect(result).toEqual(mockGradlePackages);
+        },
+      );
+
       it('should throw UnsupportedFileTypeError for unsupported file types', async () => {
         const mockFile = {name: 'package.json'} as File;
 

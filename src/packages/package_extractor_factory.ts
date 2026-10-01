@@ -1,6 +1,7 @@
 import {Package} from './types';
 import {PackageExtractor} from './extractors/types';
 import {PythonPackageExtractor} from './extractors/python/python_package_extractor';
+import {GradlePackageExtractor} from './extractors/gradle/gradle_package_extractor';
 import {UnsupportedFileTypeError} from './errors';
 
 /**
@@ -14,9 +15,9 @@ import {UnsupportedFileTypeError} from './errors';
 const extractorRegistry: Record<string, new () => PackageExtractor> = {
   requirements: PythonPackageExtractor,
   pipfile: PythonPackageExtractor,
+  gradle: GradlePackageExtractor,
   // Add more extractors here as needed:
   // package: JavaScriptPackageExtractor,
-  // pom: JavaPackageExtractor,
 };
 
 /**
@@ -30,12 +31,13 @@ class PackageExtractorFactory {
    * @throws {UnsupportedFileTypeError} If the file type is not supported
    */
   static getExtractor(file: File): PackageExtractor {
+    // The full name is matched because for Gradle files ("build.gradle",
+    // "build.gradle.kts") the extension is the identifying part.
     const fileName = file.name.toLowerCase();
-    const fileNameWithoutExtension = fileName.replace(/\.[^/.]+$/, '');
 
     // Use the registry to find a matching extractor
     const matchingKey = Object.keys(extractorRegistry).find(key =>
-      fileNameWithoutExtension.includes(key),
+      fileName.includes(key),
     );
 
     if (matchingKey) {
