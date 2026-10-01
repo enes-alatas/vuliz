@@ -11,11 +11,14 @@ export interface Package {
 }
 
 /**
- * Represents the type of a package, such as NPM, PYPI.
+ * Represents the type of a package, such as NPM, PYPI, MAVEN.
+ *
+ * Maven package names use the `group:artifact` form.
  */
 export enum PackageType {
   NPM = 'npm',
   PYPI = 'pypi',
+  MAVEN = 'maven',
 }
 
 /** Constant representing the latest version of a package */

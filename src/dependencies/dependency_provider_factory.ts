@@ -1,6 +1,7 @@
 import {Package, PackageType} from 'src/packages/types';
 import {Dependency, DependencyProvider} from './types';
 import {PythonDependencyProvider} from './python_dependency_provider';
+import {MavenDependencyProvider} from './maven_dependency_provider';
 import {
   DependencyProviderNotFoundError,
   PackageTypeUnknownError,
@@ -14,8 +15,8 @@ const providerRegistry: Partial<
   Record<PackageType, new () => DependencyProvider>
 > = {
   [PackageType.PYPI]: PythonDependencyProvider,
+  [PackageType.MAVEN]: MavenDependencyProvider,
   // [PackageType.NPM]: JavaScriptDependencyProvider,
-  // [PackageType.MAVEN]: JavaDependencyProvider,
 };
 
 /**

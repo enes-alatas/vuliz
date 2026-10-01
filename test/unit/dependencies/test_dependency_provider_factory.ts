@@ -3,7 +3,8 @@ import {
   DependencyProviderFactory,
 } from 'src/dependencies/dependency_provider_factory';
 import {PythonDependencyProvider} from 'src/dependencies/python_dependency_provider';
-import {Package} from 'src/packages/types';
+import {Package, PackageType} from 'src/packages/types';
+import {MavenDependencyProvider} from 'src/dependencies/maven_dependency_provider';
 import {Dependency} from 'src/dependencies/types';
 import {
   DependencyProviderNotFoundError,
@@ -90,6 +91,17 @@ describe('extractDependencies (DependencyProviderFactory)', () => {
     const result = await extractDependencies(singlePackage);
     expect(PythonDependencyProvider).toHaveBeenCalled();
     expect(result).toEqual(mockDependencies);
+  });
+
+  it('should use the Maven dependency provider for Maven packages', () => {
+    const mavenPackage: Package = {
+      name: 'com.google.guava:guava',
+      version: '31.1-jre',
+      type: PackageType.MAVEN,
+    };
+    expect(DependencyProviderFactory.getProvider(mavenPackage)).toBeInstanceOf(
+      MavenDependencyProvider,
+    );
   });
 
   it('should throw DependencyProviderNotFoundError for unknown package type', () => {
