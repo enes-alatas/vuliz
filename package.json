@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "buffer": "^6.0.3",
-    "globals": "^15.15.0",
+    "globals": "^17.13.0",
     "gts": "^7.0.0",
     "http-server": "^14.1.1",
     "jest": "^30.5.2",
