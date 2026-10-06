@@ -1,6 +1,7 @@
 import {extractPackages} from 'src/packages/package_extractor_factory';
 import {PythonPackageExtractor} from 'src/packages/extractors/python/python_package_extractor';
 import {GradlePackageExtractor} from 'src/packages/extractors/gradle/gradle_package_extractor';
+import {NpmPackageExtractor} from 'src/packages/extractors/npm/npm_package_extractor';
 import {PythonDependencyProvider} from 'src/dependencies/python_dependency_provider';
 import {Package} from 'src/packages/types';
 import {Dependency} from 'src/dependencies/types';
@@ -9,6 +10,7 @@ import {UnsupportedFileTypeError} from 'src/packages/errors';
 // Mock the extractors and dependency providers
 jest.mock('src/packages/extractors/python/python_package_extractor');
 jest.mock('src/packages/extractors/gradle/gradle_package_extractor');
+jest.mock('src/packages/extractors/npm/npm_package_extractor');
 jest.mock('src/dependencies/python_dependency_provider');
 
 describe('PackageExtractorFactory', () => {
@@ -24,6 +26,8 @@ describe('PackageExtractorFactory', () => {
 
   const MockedPythonPackageExtractor = jest.mocked(PythonPackageExtractor);
   const MockedGradlePackageExtractor = jest.mocked(GradlePackageExtractor);
+  const MockedNpmPackageExtractor = jest.mocked(NpmPackageExtractor);
+  const mockNpmPackages: Package[] = [{name: 'express', version: '4.18.2'}];
   const mockGradlePackages: Package[] = [
     {name: 'com.google.guava:guava', version: '31.1-jre'},
   ];
@@ -49,6 +53,14 @@ describe('PackageExtractorFactory', () => {
         ({
           fileProcessorMap: {},
           extractFromFile: jest.fn().mockResolvedValue(mockGradlePackages),
+        }) as any,
+    );
+
+    MockedNpmPackageExtractor.mockImplementation(
+      () =>
+        ({
+          fileProcessorMap: {},
+          extractFromFile: jest.fn().mockResolvedValue(mockNpmPackages),
         }) as any,
     );
 
@@ -116,14 +128,25 @@ describe('PackageExtractorFactory', () => {
         },
       );
 
+      it.each(['package.json', 'package-lock.json', 'npm-shrinkwrap.json'])(
+        'should extract packages from %s with the npm extractor',
+        async fileName => {
+          const result = await extractPackages({name: fileName} as File);
+
+          expect(NpmPackageExtractor).toHaveBeenCalled();
+          expect(PythonPackageExtractor).not.toHaveBeenCalled();
+          expect(result).toEqual(mockNpmPackages);
+        },
+      );
+
       it('should throw UnsupportedFileTypeError for unsupported file types', async () => {
-        const mockFile = {name: 'package.json'} as File;
+        const mockFile = {name: 'Cargo.toml'} as File;
 
         await expect(extractPackages(mockFile)).rejects.toThrow(
           UnsupportedFileTypeError,
         );
         await expect(extractPackages(mockFile)).rejects.toThrow(
-          'Unsupported file type: package.json',
+          'Unsupported file type: Cargo.toml',
         );
       });
 

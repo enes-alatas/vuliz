@@ -20,9 +20,9 @@ See Vuliz in action at [https://vuliz.alatas.dev](https://vuliz.alatas.dev)
 - **Gradle** - JVM languages (Java, Kotlin, Scala) - `build.gradle`, `build.gradle.kts` and `gradle.lockfile` files
 
   Transitive dependencies come from the [deps.dev](https://deps.dev) API. Build scripts are read without running Gradle, so dependencies from version catalogs (`libs.*`) and versions computed at build time are not picked up. A `gradle.lockfile` (enable [dependency locking](https://docs.gradle.org/current/userguide/dependency_locking.html), then run `./gradlew dependencies --write-locks`) gives the most accurate result, since it lists every resolved version.
+- **Node.js** (npm) - JavaScript/TypeScript packages - `package.json`, `package-lock.json` and `npm-shrinkwrap.json` files
 
-### Under Development
-- **Node.js** (npm/yarn) - JavaScript/TypeScript packages 🚧
+  Transitive dependencies come from the [deps.dev](https://deps.dev) API. `package.json` lists version ranges, so the lowest version of each range is used (e.g. `1.2.3` for `^1.2.3`); a `package-lock.json` gives the exact installed versions. Yarn and pnpm lock files are not supported yet.
 
 ## 🔍 Vulnerability Sources
 

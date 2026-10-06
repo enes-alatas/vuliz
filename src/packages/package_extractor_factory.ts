@@ -2,6 +2,7 @@ import {Package} from './types';
 import {PackageExtractor} from './extractors/types';
 import {PythonPackageExtractor} from './extractors/python/python_package_extractor';
 import {GradlePackageExtractor} from './extractors/gradle/gradle_package_extractor';
+import {NpmPackageExtractor} from './extractors/npm/npm_package_extractor';
 import {UnsupportedFileTypeError} from './errors';
 
 /**
@@ -16,8 +17,9 @@ const extractorRegistry: Record<string, new () => PackageExtractor> = {
   requirements: PythonPackageExtractor,
   pipfile: PythonPackageExtractor,
   gradle: GradlePackageExtractor,
+  package: NpmPackageExtractor,
+  shrinkwrap: NpmPackageExtractor,
   // Add more extractors here as needed:
-  // package: JavaScriptPackageExtractor,
 };
 
 /**
