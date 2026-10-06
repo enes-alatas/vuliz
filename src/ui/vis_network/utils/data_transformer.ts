@@ -1,6 +1,6 @@
 import {NetworkNode, NetworkEdge} from '../types';
 import {Dependency} from 'src/dependencies/types';
-import {Package} from 'src/packages/types';
+import {Package, PackageType} from 'src/packages/types';
 import {ColorManager} from './color_manager';
 
 /**
@@ -159,10 +159,10 @@ export class DataTransformer {
     // Validate package type if provided
     if (
       pkg.type !== undefined &&
-      !Object.values(['npm', 'pypi']).includes(pkg.type)
+      !Object.values(PackageType).includes(pkg.type)
     ) {
       throw new NetworkDataValidationError(
-        'Package type must be either "npm" or "pypi"',
+        `Package type must be one of: ${Object.values(PackageType).join(', ')}`,
         'package.type',
       );
     }
