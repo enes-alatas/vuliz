@@ -5,6 +5,7 @@ import {
 import {PythonDependencyProvider} from 'src/dependencies/python_dependency_provider';
 import {Package, PackageType} from 'src/packages/types';
 import {MavenDependencyProvider} from 'src/dependencies/maven_dependency_provider';
+import {NpmDependencyProvider} from 'src/dependencies/npm_dependency_provider';
 import {Dependency} from 'src/dependencies/types';
 import {
   DependencyProviderNotFoundError,
@@ -101,6 +102,17 @@ describe('extractDependencies (DependencyProviderFactory)', () => {
     };
     expect(DependencyProviderFactory.getProvider(mavenPackage)).toBeInstanceOf(
       MavenDependencyProvider,
+    );
+  });
+
+  it('should use the npm dependency provider for npm packages', () => {
+    const npmPackage: Package = {
+      name: 'express',
+      version: '4.18.2',
+      type: PackageType.NPM,
+    };
+    expect(DependencyProviderFactory.getProvider(npmPackage)).toBeInstanceOf(
+      NpmDependencyProvider,
     );
   });
 
